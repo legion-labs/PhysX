@@ -366,7 +366,14 @@ void NpBatchQuery::execute()
 		return;
 	}
 
+	#if PX_CLANG
+		#pragma clang diagnostic push
+		#pragma clang diagnostic ignored "-Wuninitialized-const-reference"
+	#endif
 	PxU32 hitsSpaceLeft; PX_UNUSED(hitsSpaceLeft);
+	#if PX_CLANG
+		#pragma clang diagnostic pop
+	#endif
 
 	// ====================== parse and execute the batch query memory stream ====================== 
 	PxU32 queryCount = 0;
