@@ -46,14 +46,14 @@ void Sn::ConvX::resetConvexFlags()
 void Sn::ConvX::_enumerateFields(const MetaClass* mc, ExtraDataEntry2* entries, int& nb, int baseOffset, MetaDataType type) const
 {
 	PxU32 nbFields = mc->mFields.size();
-	int offsetCheck = baseOffset;
+	//int offsetCheck = baseOffset;
 	for(PxU32 j=0;j<nbFields;j++)
 	{
 		const PxMetaDataEntry& entry = mc->mFields[j];
 		if(entry.mFlags & PxMetaDataFlag::eCLASS || entry.mFlags & PxMetaDataFlag::eEXTRA_DATA)
 			continue;
 
-		assert(offsetCheck == baseOffset + entry.mOffset);
+		//assert(offsetCheck == baseOffset + entry.mOffset);
 
 		int currentOffset = baseOffset + entry.mOffset;
 
@@ -101,7 +101,7 @@ void Sn::ConvX::_enumerateFields(const MetaClass* mc, ExtraDataEntry2* entries, 
 				}
 			}
 		}
-		offsetCheck += entry.mSize;
+		//offsetCheck += entry.mSize;
 	}
 }
 
@@ -298,7 +298,7 @@ bool Sn::ConvX::convertClass(const char* buffer, const MetaClass* mc, int offset
 	}
 
 	int srcOffsetCheck = 0;
-	int dstOffsetCheck = 0;
+	//int dstOffsetCheck = 0;
 	int j = 0;
 	// Track cases where the vtable pointer location is different for different platforms.
 	// The variables indicate whether a platform has a vtable pointer entry that has not been converted yet
@@ -369,8 +369,8 @@ bool Sn::ConvX::convertClass(const char* buffer, const MetaClass* mc, int offset
 								memset(paddingBytes, 0, size_t(padSize));
 								assert(dstEntries[j].cb);
 								(this->*dstEntries[j].cb)(paddingBytes, dstEntries[j].entry, dstEntries[j].entry);
-								assert(dstOffsetCheck==dstEntries[j].offset);
-								dstOffsetCheck += padSize;
+								//assert(dstOffsetCheck==dstEntries[j].offset);
+								//dstOffsetCheck += padSize;
 								PX_FREE(paddingBytes);
 
 								//						srcEntries[i].cb(buffer+srcOffsetCheck, srcEntries[i].entry, dstEntries[j].entry);
@@ -407,8 +407,8 @@ bool Sn::ConvX::convertClass(const char* buffer, const MetaClass* mc, int offset
 						memset(paddingBytes, 0, size_t(padSize));
 						assert(dstEntries[j].cb);
 						(this->*dstEntries[j].cb)(paddingBytes, dstEntries[j].entry, dstEntries[j].entry);
-						assert(dstOffsetCheck==dstEntries[j].offset);
-						dstOffsetCheck += padSize;
+						//assert(dstOffsetCheck==dstEntries[j].offset);
+						//dstOffsetCheck += padSize;
 						PX_FREE(paddingBytes);
 
 						// Skip dest padding field, keep same src field
@@ -566,7 +566,7 @@ bool Sn::ConvX::convertClass(const char* buffer, const MetaClass* mc, int offset
 
 			convertClass(buffer + modSrcOffsetCheck, unionMC, 0);			// ### recurse
 
-			dstOffsetCheck += dstEntry.entry.mSize;
+			//dstOffsetCheck += dstEntry.entry.mSize;
 
 			MetaClass* targetUnionMC = getMetaClass(typeName, META_DATA_DST);
 			assert(targetUnionMC);
@@ -621,8 +621,8 @@ bool Sn::ConvX::convertClass(const char* buffer, const MetaClass* mc, int offset
 			// ---- big convex surgery ----
 
 			(this->*srcEntry.cb)(buffer+modSrcOffsetCheck, srcEntry.entry, dstEntry.entry);
-			assert(dstOffsetCheck==dstEntry.offset);
-			dstOffsetCheck += dstEntry.entry.mSize;
+			//assert(dstOffsetCheck==dstEntry.offset);
+			//dstOffsetCheck += dstEntry.entry.mSize;
 			srcOffsetCheck += srcEntry.entry.mSize;  // do not use modSrcOffsetCheck here!
 
 			// ---- big convex surgery ----
@@ -636,18 +636,18 @@ bool Sn::ConvX::convertClass(const char* buffer, const MetaClass* mc, int offset
 
 	displayMessage(PxErrorCode::eDEBUG_INFO, "---------------------------------------------\n");
 
-	while(j<nbDstEntries)
-	{
-		assert(dstEntries[j].entry.mFlags & PxMetaDataFlag::ePADDING);
-		if(dstEntries[j].entry.mFlags & PxMetaDataFlag::ePADDING)
-		{
-			dstOffsetCheck += dstEntries[j].entry.mSize;
-		}
-		j++;
-	}
+	// while(j<nbDstEntries)
+	// {
+	// 	assert(dstEntries[j].entry.mFlags & PxMetaDataFlag::ePADDING);
+	// 	if(dstEntries[j].entry.mFlags & PxMetaDataFlag::ePADDING)
+	// 	{
+	// 		dstOffsetCheck += dstEntries[j].entry.mSize;
+	// 	}
+	// 	j++;
+	// }
 
-	assert(j==nbDstEntries);
-	assert(dstOffsetCheck==target_mc->mSize);
+	// assert(j==nbDstEntries);
+	//assert(dstOffsetCheck==target_mc->mSize);
 	assert(srcOffsetCheck==mc->mSize);
 
 	// ---- big convex surgery ----

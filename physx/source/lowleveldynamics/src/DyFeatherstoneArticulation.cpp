@@ -2160,9 +2160,9 @@ namespace Dy
 				PxTGSSolverBodyTxInertia& txI0 = txInertia[desc.bodyADataIndex];
 				PxTGSSolverBodyTxInertia& txI1 = txInertia[desc.bodyBDataIndex];
 
-				PxU8 flags = unit.rigidCore0->mFlags;
-				if (unit.rigidCore1)
-					flags |= PxU8(unit.rigidCore1->mFlags);
+				// PxU8 flags = unit.rigidCore0->mFlags;
+				// if (unit.rigidCore1)
+				// 	flags |= PxU8(unit.rigidCore1->mFlags);
 
 				blockDesc.bodyFrame0 = unit.rigidCore0->body2World;
 				blockDesc.bodyFrame1 = unit.rigidCore1->body2World;

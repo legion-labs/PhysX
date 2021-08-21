@@ -301,7 +301,7 @@ static bool setupFinalizeSolverConstraintsCoulomb(
 			FStore(angD1, &frictionHeader->angDom1);
 			frictionHeader->type			= frictionHeaderType;
 			
-			PxU32 totalPatchContactCount = 0;
+			//PxU32 totalPatchContactCount = 0;
 		
 			for(PxU32 patch=c.correlationListHeads[i]; 
 				patch!=CorrelationBuffer::LIST_END; 
@@ -358,7 +358,7 @@ static bool setupFinalizeSolverConstraintsCoulomb(
 					}
 				}
 
-				totalPatchContactCount += c.contactPatches[patch].count;
+				//totalPatchContactCount += c.contactPatches[patch].count;
 				
 				ptr = p;	
 			}

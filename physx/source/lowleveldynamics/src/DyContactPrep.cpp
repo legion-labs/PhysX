@@ -136,7 +136,7 @@ static void setupFinalizeSolverConstraints(Sc::ShapeInteraction* shapeInteractio
 	const Vec3V bodyFrame1p = V3LoadU(bodyFrame1.p);
 
 	PxU32 frictionPatchWritebackAddrIndex = 0;
-	PxU32 contactWritebackCount = 0;
+	//PxU32 contactWritebackCount = 0;
 
 	Ps::prefetchLine(c.contactID);
 	Ps::prefetchLine(c.contactID, 128);
@@ -234,7 +234,7 @@ static void setupFinalizeSolverConstraints(Sc::ShapeInteraction* shapeInteractio
 
 			ptr = p;
 		}
-		contactWritebackCount += contactCount;
+		//contactWritebackCount += contactCount;
 
 		PxF32* forceBuffers = reinterpret_cast<PxF32*>(ptr);
 		PxMemZero(forceBuffers, sizeof(PxF32) * contactCount);

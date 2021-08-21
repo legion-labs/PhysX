@@ -235,7 +235,7 @@ bool setupFinalizeExtSolverContactsCoulomb(
 			frictionHeader->angDom1 = invInertiaScale1;
 			frictionHeader->type			= frictionHeaderType;
 			
-			PxU32 totalPatchContactCount = 0;
+			//PxU32 totalPatchContactCount = 0;
 		
 			for(PxU32 patch=c.correlationListHeads[i]; 
 				patch!=CorrelationBuffer::LIST_END; 
@@ -294,7 +294,7 @@ bool setupFinalizeExtSolverContactsCoulomb(
 					}					
 				}
 
-				totalPatchContactCount += c.contactPatches[patch].count;
+				//totalPatchContactCount += c.contactPatches[patch].count;
 				
 				ptr = p;	
 			}

@@ -1145,9 +1145,9 @@ void DynamicsTGSContext::createSolverConstraints(PxSolverConstraintDesc* contact
 				blockDesc.body0 = &b0;
 				blockDesc.body1 = &b1;
 
-				PxU8 flags = unit.rigidCore0->mFlags;
-				if (unit.rigidCore1)
-					flags |= PxU8(unit.rigidCore1->mFlags);
+				// PxU8 flags = unit.rigidCore0->mFlags;
+				// if (unit.rigidCore1)
+				// 	flags |= PxU8(unit.rigidCore1->mFlags);
 
 				blockDesc.bodyFrame0 = unit.rigidCore0->body2World;
 				blockDesc.bodyFrame1 = unit.rigidCore1->body2World;

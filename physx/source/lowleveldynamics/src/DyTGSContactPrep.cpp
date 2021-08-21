@@ -520,7 +520,7 @@ namespace Dy
 		
 
 		PxU32 frictionPatchWritebackAddrIndex = 0;
-		PxU32 contactWritebackCount = 0;
+		//PxU32 contactWritebackCount = 0;
 
 		Ps::prefetchLine(c.contactID);
 		Ps::prefetchLine(c.contactID, 128);
@@ -634,7 +634,7 @@ namespace Dy
 				ptr = p;
 			}
 
-			contactWritebackCount += contactCount;
+			//contactWritebackCount += contactCount;
 
 			PxF32* forceBuffers = reinterpret_cast<PxF32*>(ptr);
 			PxMemZero(forceBuffers, sizeof(PxF32) * contactCount);
@@ -1033,7 +1033,7 @@ namespace Dy
 		const FloatV restDistance = FLoad(restDist);
 
 		PxU32 frictionPatchWritebackAddrIndex = 0;
-		PxU32 contactWritebackCount = 0;
+		//PxU32 contactWritebackCount = 0;
 
 		Ps::prefetchLine(c.contactID);
 		Ps::prefetchLine(c.contactID, 128);
@@ -1132,7 +1132,7 @@ namespace Dy
 
 				ptr = p;
 			}
-			contactWritebackCount += contactCount;
+			//contactWritebackCount += contactCount;
 
 			accumulatedImpulse = FDiv(accumulatedImpulse, FLoad(PxF32(contactCount)));
 
@@ -1783,7 +1783,7 @@ namespace Dy
 	void writeBackContact(const PxSolverConstraintDesc& desc, SolverContext* cache)
 	{
 		PX_UNUSED(cache);
-		PxReal normalForce = 0;
+		//PxReal normalForce = 0;
 
 		PxU8* PX_RESTRICT cPtr = desc.constraint;
 		PxReal* PX_RESTRICT vForceWriteback = reinterpret_cast<PxReal*>(desc.writeBack);
@@ -1817,7 +1817,7 @@ namespace Dy
 				{
 					PxReal appliedForce = forceBuffer[i];
 					*vForceWriteback++ = appliedForce;
-					normalForce += appliedForce;
+					//normalForce += appliedForce;
 				}
 			}
 

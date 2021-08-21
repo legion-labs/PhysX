@@ -318,7 +318,7 @@ void setupFinalizeExtSolverContacts(
 	const FloatV restDistance = FLoad(restDist); 
 
 	PxU32 frictionPatchWritebackAddrIndex = 0;
-	PxU32 contactWritebackCount = 0;
+	//PxU32 contactWritebackCount = 0;
 
 	Ps::prefetchLine(c.contactID);
 	Ps::prefetchLine(c.contactID, 128);
@@ -403,7 +403,7 @@ void setupFinalizeExtSolverContacts(
 
 			ptr = p;
 		}
-		contactWritebackCount += contactCount;
+		//contactWritebackCount += contactCount;
 
 		accumImpulse = FDiv(accumImpulse, FLoad(PxF32(contactCount)));
 
