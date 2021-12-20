@@ -598,10 +598,14 @@ struct SubSortSAH
 
 			// verification code, make sure split counts add up to clusterSize
 			PX_ASSERT(splits.size() == RTREE_N);
-			PxU32 sum = 0;
-			for(PxU32 j = 0; j < RTREE_N; j++)
-				sum += splits[j].count;
-			PX_ASSERT(sum == clusterSize);
+
+			#if PX_ENABLE_ASSERTS
+				PxU32 sum = 0;
+				for(PxU32 j = 0; j < RTREE_N; j++) {
+					sum += splits[j].count;
+				}
+				PX_ASSERT(sum == clusterSize);
+			#endif // PX_ENABLE_ASSERTS
 		}
 		else // clusterSize < RTREE_N
 		{
