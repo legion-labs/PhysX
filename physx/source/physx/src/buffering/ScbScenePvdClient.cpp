@@ -54,7 +54,9 @@ using namespace Scb;
 
 namespace
 {
+#if PX_DEBUG || PX_CHECKED || PX_PROFILE
 	PX_FORCE_INLINE	PxU64	getContextId(Scb::Scene& scene) { return scene.getContextId(); }
+#endif
 
 	///////////////////////////////////////////////////////////////////////////////
 
