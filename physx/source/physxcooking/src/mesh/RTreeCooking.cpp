@@ -623,17 +623,17 @@ struct SubSortSAH
 		PxU32 splitCounts[RTREE_N];
 		splitStarts[0] = 0;
 		splitCounts[0] = splitPos[0];
-		PxU32 sumCounts = splitCounts[0];
+		//PxU32 sumCounts = splitCounts[0];
 		for(PxU32 j = 1; j < RTREE_N; j++)
 		{
 			splitStarts[j] = splitPos[j-1];
 			PX_ASSERT(splitStarts[j-1]<=splitStarts[j]);
 			splitCounts[j] = splitPos[j]-splitPos[j-1];
 			PX_ASSERT(splitCounts[j] > 0 || clusterSize < RTREE_N);
-			sumCounts += splitCounts[j];
+			//sumCounts += splitCounts[j];
 			PX_ASSERT(splitStarts[j-1]+splitCounts[j-1]<=splitStarts[j]);
 		}
-		PX_ASSERT(sumCounts == clusterSize);
+		//PX_ASSERT(sumCounts == clusterSize);
 		PX_ASSERT(splitStarts[RTREE_N-1]+splitCounts[RTREE_N-1]<=clusterSize);
 
 		// mark this cluster as terminal based on clusterSize <= stopAtTrisPerPage parameter for current iTradeOff user specified preset
