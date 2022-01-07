@@ -37,7 +37,7 @@
 	// recreate them here in full, since these functions are actually necessary
 	// for physx to function properly. Unfortunately.
 	#if defined(PX_MUSL)
-	int fedisableexcept(int excepts) {
+	void fedisableexcept(int excepts) {
 		unsigned short int new_exc;
 		unsigned int new_mask;
 		excepts &= FE_ALL_EXCEPT;
@@ -50,7 +50,6 @@
 		/* The SSE exception masks are shifted by 7 bits.  */
 		new_mask |= excepts << 7;
 		asm ("ldmxcsr %0" : : "m" (*&new_mask));
-		return old_exc;
 	}
 	#endif // PX_MUSL
 #endif
