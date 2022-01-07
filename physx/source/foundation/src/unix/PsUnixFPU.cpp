@@ -29,8 +29,30 @@
 #include "PsFPU.h"
 
 #if !(defined(__CYGWIN__) || PX_ANDROID || PX_PS4)
-#include <fenv.h>
-PX_COMPILE_TIME_ASSERT(8 * sizeof(uint32_t) >= sizeof(fenv_t));
+	#include <fenv.h>
+	PX_COMPILE_TIME_ASSERT(8 * sizeof(uint32_t) >= sizeof(fenv_t));
+
+	// Since musl doesn't support many of the functions around floating point
+	// exceptions since they are GLIBC extensions and not part of POSIX, we just
+	// recreate them here in full, since these functions are actually necessary
+	// for physx to function properly. Unfortunately.
+	#if defined(PX_MUSL)
+	int fedisableexcept(int excepts) {
+		unsigned short int new_exc;
+		unsigned int new_mask;
+		excepts &= FE_ALL_EXCEPT;
+		/* Get the current control word of the x87 FPU.  */
+		asm ("fstcw %0" : "=m" (*&new_exc));
+		new_exc |= excepts;
+		asm ("fldcw %0" : : "m" (*&new_exc));
+		/* And now the same for the SSE MXCSR register.  */
+		asm ("stmxcsr %0" : "=m" (*&new_mask));
+		/* The SSE exception masks are shifted by 7 bits.  */
+		new_mask |= excepts << 7;
+		asm ("ldmxcsr %0" : : "m" (*&new_mask));
+		return old_exc;
+	}
+	#endif // PX_MUSL
 #endif
 
 #if PX_OSX
