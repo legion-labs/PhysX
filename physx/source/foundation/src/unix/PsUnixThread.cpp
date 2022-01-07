@@ -37,7 +37,13 @@
 
 #include <math.h>
 #if !PX_APPLE_FAMILY && !defined(ANDROID) && !defined(__CYGWIN__) && !PX_PS4 && !PX_EMSCRIPTEN
-#include <bits/local_lim.h> // PTHREAD_STACK_MIN
+// In newer versions this define is actually grabbed dynamically via a non-standard
+// __sysconf call that musl doesn't support, but 16k is the canonical min so...
+#if defined(PX_MUSL)
+	#define PTHREAD_STACK_MIN 16384
+#else
+	#include <bits/local_lim.h> // PTHREAD_STACK_MIN
+#endif
 #endif
 #include <stdio.h>
 #include <pthread.h>
