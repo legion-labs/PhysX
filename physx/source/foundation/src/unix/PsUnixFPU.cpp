@@ -60,6 +60,29 @@
 
 		return old_exc;
 	}
+
+	int feenableexcept(int excepts) {
+		unsigned short int new_exc, old_exc;
+		unsigned int new_mask;
+		
+		excepts &= FE_ALL_EXCEPT;
+		
+		/* Get the current control word of the x87 FPU.  */
+		asm ("fstcw %0" : "=m" (*&new_exc));
+		old_exc = (~new_exc) & FE_ALL_EXCEPT;
+		
+		new_exc &= ~excepts;
+		asm ("fldcw %0" : : "m" (*&new_exc));
+		
+		/* And now the same for the SSE MXCSR register.  */
+		asm ("stmxcsr %0" : "=m" (*&new_mask));
+		
+		/* The SSE exception masks are shifted by 7 bits.  */
+		new_mask &= ~(excepts << 7);
+		asm ("ldmxcsr %0" : : "m" (*&new_mask));
+
+		return old_exc;
+	}
 	#endif // PX_MUSL
 #endif
 
