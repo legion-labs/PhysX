@@ -203,7 +203,7 @@ class PX_FOUNDATION_API ThreadImpl
 	static void yield();
 
 	/** Return the number of physical cores (does not include hyper-threaded cores), returns 0 on failure */
-	static uint32_t getNbPhysicalCores();
+	//static uint32_t getNbPhysicalCores();
 
 	/**
 	Size of this class.
@@ -360,10 +360,10 @@ class ThreadT : protected Alloc, public UserAllocated, public Runnable
 		return ThreadImpl::getId();
 	}
 
-	static uint32_t getNbPhysicalCores()
-	{
-		return ThreadImpl::getNbPhysicalCores();
-	}
+	// static uint32_t getNbPhysicalCores()
+	// {
+	// 	return ThreadImpl::getNbPhysicalCores();
+	// }
 
   private:
 	class ThreadImpl* mImpl;

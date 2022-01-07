@@ -118,73 +118,73 @@ ThreadImpl::Id ThreadImpl::getId()
 // fwd GetLogicalProcessorInformation()
 typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
-uint32_t ThreadImpl::getNbPhysicalCores()
-{
-	if(!gPhysicalCoreCount)
-	{
-		// modified example code from: http://msdn.microsoft.com/en-us/library/ms683194
-		LPFN_GLPI glpi;
-		PSYSTEM_LOGICAL_PROCESSOR_INFORMATION buffer = NULL;
-		PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = NULL;
-		DWORD returnLength = 0;
-		DWORD processorCoreCount = 0;
-		DWORD byteOffset = 0;
+// uint32_t ThreadImpl::getNbPhysicalCores()
+// {
+// 	if(!gPhysicalCoreCount)
+// 	{
+// 		// modified example code from: http://msdn.microsoft.com/en-us/library/ms683194
+// 		LPFN_GLPI glpi;
+// 		PSYSTEM_LOGICAL_PROCESSOR_INFORMATION buffer = NULL;
+// 		PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = NULL;
+// 		DWORD returnLength = 0;
+// 		DWORD processorCoreCount = 0;
+// 		DWORD byteOffset = 0;
 
-		glpi = (LPFN_GLPI)GetProcAddress(GetModuleHandle(TEXT("kernel32")), "GetLogicalProcessorInformation");
+// 		glpi = (LPFN_GLPI)GetProcAddress(GetModuleHandle(TEXT("kernel32")), "GetLogicalProcessorInformation");
 
-		if(NULL == glpi)
-		{
-			// GetLogicalProcessorInformation not supported on OS < XP Service Pack 3
-			return 0;
-		}
+// 		if(NULL == glpi)
+// 		{
+// 			// GetLogicalProcessorInformation not supported on OS < XP Service Pack 3
+// 			return 0;
+// 		}
 
-		DWORD rc = (DWORD)glpi(NULL, &returnLength);
-		PX_ASSERT(rc == FALSE);
-		PX_UNUSED(rc);
+// 		DWORD rc = (DWORD)glpi(NULL, &returnLength);
+// 		PX_ASSERT(rc == FALSE);
+// 		PX_UNUSED(rc);
 
-		// first query reports required buffer space
-		if(GetLastError() == ERROR_INSUFFICIENT_BUFFER)
-		{
-			buffer = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION)PxAlloca(returnLength);
-		}
-		else
-		{
-			physx::shdfnd::getFoundation().error(PxErrorCode::eINTERNAL_ERROR, __FILE__, __LINE__,
-			                                     "Error querying buffer size for number of physical processors");
-			return 0;
-		}
+// 		// first query reports required buffer space
+// 		if(GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+// 		{
+// 			buffer = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION)PxAlloca(returnLength);
+// 		}
+// 		else
+// 		{
+// 			physx::shdfnd::getFoundation().error(PxErrorCode::eINTERNAL_ERROR, __FILE__, __LINE__,
+// 			                                     "Error querying buffer size for number of physical processors");
+// 			return 0;
+// 		}
 
-		// retrieve data
-		rc = (DWORD)glpi(buffer, &returnLength);
-		if(rc != TRUE)
-		{
-			physx::shdfnd::getFoundation().error(PxErrorCode::eINTERNAL_ERROR, __FILE__, __LINE__,
-			                                     "Error querying number of physical processors");
-			return 0;
-		}
+// 		// retrieve data
+// 		rc = (DWORD)glpi(buffer, &returnLength);
+// 		if(rc != TRUE)
+// 		{
+// 			physx::shdfnd::getFoundation().error(PxErrorCode::eINTERNAL_ERROR, __FILE__, __LINE__,
+// 			                                     "Error querying number of physical processors");
+// 			return 0;
+// 		}
 
-		ptr = buffer;
+// 		ptr = buffer;
 
-		while(byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
-		{
-			switch(ptr->Relationship)
-			{
-			case RelationProcessorCore:
-				processorCoreCount++;
-				break;
-			default:
-				break;
-			}
+// 		while(byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
+// 		{
+// 			switch(ptr->Relationship)
+// 			{
+// 			case RelationProcessorCore:
+// 				processorCoreCount++;
+// 				break;
+// 			default:
+// 				break;
+// 			}
 
-			byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
-			ptr++;
-		}
+// 			byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+// 			ptr++;
+// 		}
 
-		gPhysicalCoreCount = processorCoreCount;
-	}
+// 		gPhysicalCoreCount = processorCoreCount;
+// 	}
 
-	return gPhysicalCoreCount;
-}
+// 	return gPhysicalCoreCount;
+// }
 
 ThreadImpl::ThreadImpl()
 {

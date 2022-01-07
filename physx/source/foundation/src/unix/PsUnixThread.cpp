@@ -414,43 +414,43 @@ ThreadPriority::Enum ThreadImpl::getPriority(Id pthread)
 #endif
 }
 
-uint32_t ThreadImpl::getNbPhysicalCores()
-{
-#if PX_APPLE_FAMILY
-	int count;
-	size_t size = sizeof(count);
-	return sysctlbyname("hw.physicalcpu", &count, &size, NULL, 0) ? 0 : count;
-#elif defined(ANDROID)
-	return android_getCpuCount();
-#else
-	// Linux exposes CPU topology using /sys/devices/system/cpu
-	// https://www.kernel.org/doc/Documentation/cputopology.txt
-	if(FILE* f = fopen("/sys/devices/system/cpu/possible", "r"))
-	{
-		int minIndex, maxIndex;
-		int n = fscanf(f, "%d-%d", &minIndex, &maxIndex);
-		fclose(f);
+// uint32_t ThreadImpl::getNbPhysicalCores()
+// {
+// #if PX_APPLE_FAMILY
+// 	int count;
+// 	size_t size = sizeof(count);
+// 	return sysctlbyname("hw.physicalcpu", &count, &size, NULL, 0) ? 0 : count;
+// #elif defined(ANDROID)
+// 	return android_getCpuCount();
+// #else
+// 	// Linux exposes CPU topology using /sys/devices/system/cpu
+// 	// https://www.kernel.org/doc/Documentation/cputopology.txt
+// 	if(FILE* f = fopen("/sys/devices/system/cpu/possible", "r"))
+// 	{
+// 		int minIndex, maxIndex;
+// 		int n = fscanf(f, "%d-%d", &minIndex, &maxIndex);
+// 		fclose(f);
 
-		if(n == 2)
-			return (maxIndex - minIndex) + 1;
-		else if(n == 1)
-			return minIndex + 1;
-	}
+// 		if(n == 2)
+// 			return (maxIndex - minIndex) + 1;
+// 		else if(n == 1)
+// 			return minIndex + 1;
+// 	}
 
-#if PX_PS4
-	// Reducing to 6 to take into account that the OS appears to use 2 cores at peak currently.
-	return 6;
-#else
-	// For non-Linux kernels this fallback is possibly the best we can do
-	// but will report logical (hyper-threaded) counts
-	int n = sysconf(_SC_NPROCESSORS_CONF);
-	if(n < 0)
-		return 0;
-	else
-		return n;
-#endif
-#endif
-}
+// #if PX_PS4
+// 	// Reducing to 6 to take into account that the OS appears to use 2 cores at peak currently.
+// 	return 6;
+// #else
+// 	// For non-Linux kernels this fallback is possibly the best we can do
+// 	// but will report logical (hyper-threaded) counts
+// 	int n = sysconf(_SC_NPROCESSORS_CONF);
+// 	if(n < 0)
+// 		return 0;
+// 	else
+// 		return n;
+// #endif
+// #endif
+// }
 
 uint32_t TlsAlloc()
 {

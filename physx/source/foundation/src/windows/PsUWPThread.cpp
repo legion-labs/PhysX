@@ -309,12 +309,12 @@ uint32_t ThreadImpl::getDefaultStackSize()
 	return 1048576;
 };
 
-uint32_t ThreadImpl::getNbPhysicalCores()
-{
-	SYSTEM_INFO info;
-	GetNativeSystemInfo(&info);
-	return info.dwNumberOfProcessors;
-}
+// uint32_t ThreadImpl::getNbPhysicalCores()
+// {
+// 	SYSTEM_INFO info;
+// 	GetNativeSystemInfo(&info);
+// 	return info.dwNumberOfProcessors;
+// }
 
 } // namespace shdfnd
 } // namespace physx
